@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Öğrenci Notları</title>
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <style>
+            body {
+            background-color: rgb(55, 52, 52);
+        }
+        .custom-input {
+            background-color: #f0f8ff; /* Arka plan rengi */
+            color: #333;              /* Metin rengi */
+            border: 1px solid #ccc;   /* Kenarlık rengi */
+            padding: 2px;             /* İç boşluk */
+            border-radius: 4px;       /* Köşe yuvarlatma */
+        }
+        </style>
+</head>
+
+<body>
+    
+    <h1>Öğrenci Notları</h1>
+    <table border="1" class="table table-dark my-5 " style="-webkit-text-fill-color: rgb(31, 92, 51); ">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Matematik</th>
+                <th>Fizik</th>
+                <th>Kimya</th>
+                <th>Tarih</th>
+                <th>Cografya</th>
+                <th>Felsefe</th>
+                <th>Güncelle</th>
+            </tr>
+        </thead>
+        <tbody id="ogrenci-table-body">
+            <!-- Öğrenci verileri burada gösterilecek -->
+        </tbody>
+    </table>
+
+    <h2>Öğrenci Cevapları</h2>
+    <table border="1" class="table table-dark my-5" style="-webkit-text-fill-color: rgb(31, 92, 51); ">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Numara</th>
+                <th>Matematik</th>
+                <th>Fizik</th>
+                <th>Kimya</th>
+                <th>Tarih</th>
+                <th>Cografya</th>
+                <th>Felsefe</th>
+            </tr>
+        </thead>
+        <tbody id="cevap-table-body">
+            <!-- Öğrenci cevapları burada gösterilecek -->
+        </tbody>
+    </table>
+
+    <h2>Öğrenci Sonuçları</h2>
+    <table border="1" class="table table-dark my-5" style="-webkit-text-fill-color: rgb(31, 92, 51); ">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Numara</th>
+                <th>Matematik</th>
+                <th>Fizik</th>
+                <th>Kimya</th>
+                <th>Tarih</th>
+                <th>Cografya</th>
+                <th>Felsefe</th>
+            </tr>
+        </thead>
+        <tbody id="cevap-table-body">
+            <!-- Öğrenci cevapları burada gösterilecek -->
+        </tbody>
+    </table>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('/ogrenciler')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.getElementById('ogrenci-table-body');
+                        data.forEach(ogrenci => {
+                            const row = document.createElement('tr');
+    
+                            row.innerHTML = `
+                                <td>${ogrenci.ogrenci_id}</td>
+                                <td>${ogrenci.ad}</td>
+                                <td>${ogrenci.soyad}</td>
+                                 <td><input type="number" name="mat_not" value="${ogrenci.mat_not}" class="custom-input"></td>
+                            <td><input type="number" name="fiz_not" value="${ogrenci.fiz_not}" class="custom-input"></td>
+                            <td><input type="number" name="kim_not" value="${ogrenci.kim_not}" class="custom-input"></td>
+                            <td><input type="number" name="tar_not" value="${ogrenci.tar_not}" class="custom-input"></td>
+                            <td><input type="number" name="cog_not" value="${ogrenci.cog_not}" class="custom-input"></td>
+                            <td><input type="number" name="fel_not" value="${ogrenci.fel_not}" class="custom-input"></td>
+                            <td><button onclick="updateNotlar(${ogrenci.ogrenci_id}, this)">Güncelle</button></td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    });
+    
+                fetch('/ogrenci-cevaplari')
+                    .then(response => response.json())
+                    .then(data => {
+                        const cevapTableBody = document.getElementById('cevap-table-body');
+                        data.forEach(ogrenci => {
+                            const row = document.createElement('tr');
+    
+                            row.innerHTML = `
+                                <td>${ogrenci.ogrenci_id}</td>
+                                <td>${ogrenci.ad}</td>
+                                <td>${ogrenci.soyad}</td>
+                                <td>${ogrenci.numara}</td>
+                                <td>${ogrenci.Matematik}</td>
+                                <td>${ogrenci.Fizik}</td>
+                                <td>${ogrenci.Kimya}</td>
+                                <td>${ogrenci.Tarih}</td>
+                                <td>${ogrenci.Cografya}</td>
+                                <td>${ogrenci.Felsefe}</td>
+                            `;
+                            cevapTableBody.appendChild(row);
+                        });
+                    });
+            });
+    
+            function updateNotlar(ogrenci_id, button) {
+                const row = button.closest('tr');
+                const mat_not = row.querySelector('input[name="mat_not"]').value;
+                const fiz_not = row.querySelector('input[name="fiz_not"]').value;
+                const kim_not = row.querySelector('input[name="kim_not"]').value;
+                const tar_not = row.querySelector('input[name="tar_not"]').value;
+                const cog_not = row.querySelector('input[name="cog_not"]').value;
+                const fel_not = row.querySelector('input[name="fel_not"]').value;
+    
+                fetch('/update-notlar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ogrenci_id,
+                        mat_not,
+                        fiz_not,
+                        kim_not,
+                        tar_not,
+                        cog_not,
+                        fel_not
+                    })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data);
+                    });
+            }
+        </script>
+</body>
+
+</html>

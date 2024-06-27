@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(55, 52, 52);
+        }
+
+        #pdf-canvas {
+            border: 1px solid black;
+            width: 100%;
+            height: auto;
+        }
+
+        .optik-form {
+            margin-top: 20px;
+        }
+
+        .optik-form p {
+            margin: 5px 0;
+        }
+
+        #countdown {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        .custom-input {
+            background-color: #f0f8ff; /* Arka plan rengi */
+            color: #333;              /* Metin rengi */
+            border: 1px solid #ccc;   /* Kenarlık rengi */
+            padding: 5px;             /* İç boşluk */
+            border-radius: 4px;       /* Köşe yuvarlatma */
+        }
+        .centered {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="btn btn-dark " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+        aria-controls="offcanvasWithBothOptions">Seçenekler</button>
+    <div class="container">
+
+        <p class=" fs-1 text-center fw-bold">Öğrenci sınav paneli</p>
+    </div>
+
+
+    <div class="offcanvas offcanvas-start bg-dark" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+        aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop with scrolling</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <p class="d-inline-flex gap-1">
+                            <a class="btn btn-primary px-5" id="bilgilerimButonu" data-bs-toggle="collapse"
+                                href="#multiCollapseExample1" role="button" aria-expanded="false"
+                                aria-controls="multiCollapseExample1">BİLGİLERİM</a>
+
+
+                        </p>
+                        <div class="row my-5">
+                            <div class="col">
+                                <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                    <div class="card card-body">
+                                        <div class="centered">
+
+                                            <ul id="infoList"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="d-inline-flex gap-1">
+                            <a class="btn btn-primary px-4" id="sinavsonucButon" data-bs-toggle="collapse" href="#multiCollapseExample2"
+                                role="button" aria-expanded="false" aria-controls="multiCollapseExample2">SINAV
+                                SONUÇLARI</a>
+
+                        </p>
+                        <div class="row my-5">
+                            <div class="col">
+                                <div class="collapse multi-collapse" id="multiCollapseExample2">
+                                    <div class="card card-body">
+                                        <div class="centered">
+
+                                            <ul id="infoList2"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p class="d-inline-flex gap-1">
+                            <a class="btn btn-primary px-4" data-bs-toggle="collapse" href="#multiCollapseExample3"
+                                role="button" aria-expanded="false" aria-controls="multiCollapseExample3">ŞİFRE
+                                İŞLEMLERİ</a>
+
+                        </p>
+                        <div class="row my-5">
+                            <div class="col">
+                                <div class="collapse multi-collapse" id="multiCollapseExample3">
+                                    <div class="card card-body">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="floatingInput"
+                                                placeholder="okul numaranız">
+                                            <label for="floatingInput">Okul numarası</label>
+                                        </div>
+                                        <div class="form-floating">
+                                            <input type="password" class="form-control" id="floatingPassword"
+                                                placeholder="Password">
+                                            <label for="floatingPassword">Yeni şifre</label>
+                                        </div>
+                                        <button type="button" class="btn btn-danger my-2"
+                                            id="changePasswordButton">Değiştir</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-danger" type="button" id="logoutButton">Çıkış Yap</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center py-5 ">
+        <div class="row py-5">
+            <div class="col">
+                <div class="card border-dark" style="width: 18rem;">
+                    <div class="card-body bg-danger text-light ">
+                        <h5 class="card-title">Matematik</h5>
+                        <h6 class="card-subtitle mb-2 text-body-light">Hocanın adı</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <button type="button" class="btn btn-secondary">Başla</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-dark" style="width: 18rem;">
+                    <div class="card-body bg-warning text-light">
+                        <h5 class="card-title">Fizik</h5>
+                        <h6 class="card-subtitle mb-2 text-body-light">Hocanın Adı</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <button type="button" class="btn btn-secondary">Başla</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-dark" style="width: 18rem;">
+                    <div class="card-body bg-danger text-light">
+                        <h5 class="card-title">Kimya</h5>
+                        <h6 class="card-subtitle mb-2 text-body-light">Hocanın Adı</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <button type="button" class="btn btn-secondary">Başla</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card border-dark" style="width: 18rem;">
+                    <div class="card-body bg-dark text-light">
+                        <h5 class="card-title">Tarih</h5>
+                        <h6 class="card-subtitle mb-2 text-body-light">Hocanın Adı</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <button type="button" class="btn btn-secondary">Başla</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-dark" style="width: 18rem;">
+                    <div class="card-body bg-success text-light">
+                        <h5 class="card-title">Cografya</h5>
+                        <h6 class="card-subtitle mb-2 text-body-light">Hocanın Adı</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <button type="button" class="btn btn-secondary">Başla</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-dark" style="width: 18rem;">
+                    <div class="card-body bg-dark text-light">
+                        <h5 class="card-title">Felsefe</h5>
+                        <h6 class="card-subtitle mb-2 text-body-light">Hocanın Adı</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's content.</p>
+                        <button type="button" class="btn btn-secondary">Başla</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Modal HTML -->
+    <div id="pdfModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="max-width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">PDF Görüntüleme</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex">
+                    <div class="pdf-container" style="width: 50%;">
+                        <canvas id="pdf-canvas"></canvas>
+                    </div>
+                    <div class="other-content" style="width: 50%; padding-left: 20px;">
+                        <!-- Diğer içerikler buraya eklenebilir -->
+                        <p>Burada diğer içerikler görünebilir.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="completeExamButton">Tamam</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function() {
+  let currentSinavAdi = '';
+
+  document.querySelectorAll('button.btn-secondary').forEach(button => {
+    button.addEventListener('click', function() {
+      const sinavAdi = this.closest('.card-body').querySelector('.card-title').innerText;
+      currentSinavAdi = sinavAdi;
+
+      fetch(`/getPdfLink?sinavAdi=${encodeURIComponent(sinavAdi)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.link) {
+          showPdf(data.link);
+          showExamInfo(data.sure, data.soru_sayisi);
+          $('#pdfModal').modal('show');
+          startCountdown(data.sure);
+        } else {
+          alert('Sınav bilgileri bulunamadı.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  });
+
+  function showPdf(url) {
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc) {
+      pdfDoc.getPage(1).then(function(page) {
+        var scale = 1.5;
+        var viewport = page.getViewport({ scale: scale });
+
+        var canvas = document.getElementById('pdf-canvas');
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        var renderContext = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        page.render(renderContext);
+      });
+    });
+  }
+
+  function showExamInfo(sure, soruSayisi) {
+    const otherContentDiv = document.querySelector('.other-content');
+    otherContentDiv.innerHTML = `
+      <p>Sınav Süresi: ${sure} dakika</p>
+      <p>Soru Sayısı: ${soruSayisi}</p>
+      <div id="countdown"></div>
+      ${generateOptikForm(soruSayisi)}
+    `;
+  }
+
+  function generateOptikForm(soruSayisi) {
+    let optikHtml = '<div class="optik-form">';
+    for (let i = 1; i <= soruSayisi; i++) {
+      optikHtml += `<p>${i}. Soru: 
+        <label><input type="radio" name="soru${i}" value="A"> A</label>
+        <label><input type="radio" name="soru${i}" value="B"> B</label>
+        <label><input type="radio" name="soru${i}" value="C"> C</label>
+        <label><input type="radio" name="soru${i}" value="D"> D</label>
+        <label><input type="radio" name="soru${i}" value="E"> E</label>
+      </p>`;
+    }
+    optikHtml += '</div>';
+    return optikHtml;
+  }
+
+  function startCountdown(minutes) {
+    const countdownDiv = document.getElementById('countdown');
+    let time = minutes * 60;
+    
+    const interval = setInterval(() => {
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+      countdownDiv.innerHTML = `Kalan Süre: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+      if (time <= 0) {
+        clearInterval(interval);
+        countdownDiv.innerHTML = 'Sınav Süresi Doldu!';
+      }
+
+      time--;
+    }, 1000);
+  }
+
+  document.getElementById('completeExamButton').addEventListener('click', function() {
+    const answers = Array.from(document.querySelectorAll('.optik-form p')).map(p => {
+      const checkedOption = p.querySelector('input[type="radio"]:checked');
+      return checkedOption ? checkedOption.value : '-';
+    }).join('');
+
+    fetch('/saveAnswers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ sinavAdi: currentSinavAdi, answers: answers }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message);
+      $('#pdfModal').modal('hide');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+});
+
+
+
+    </script>
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            fetch('/cikis_ogrenci', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = '/anasayfa';
+                } else {
+                    alert('Çıkış yapma işlemi başarısız!');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('changePasswordButton').addEventListener('click', function () {
+                var numara = document.getElementById('floatingInput').value;
+                var yeniSifre = document.getElementById('floatingPassword').value;
+
+                fetch('http://localhost:5500/sifre_degistir', { // Port numarasını burada belirtiyoruz
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ numara: numara, yeniSifre: yeniSifre })
+                }).then(response => {
+                    if (response.ok) {
+                        alert('Şifre başarıyla değiştirildi.');
+                        // Şifre değiştirme işlemi başarılıysa sayfayı yenile
+                        window.location.reload();
+                    } else {
+                        alert('Şifre değiştirme işlemi başarısız!');
+                    }
+                }).catch(error => {
+                    console.error('Şifre değiştirme işlemi sırasında bir hata oluştu:', error);
+                    alert('Şifre değiştirme işlemi sırasında bir hata oluştu.');
+                });
+            });
+        });
+
+
+        document.getElementById('bilgilerimButonu').addEventListener('click', () => {
+    fetch('/bilgilerim')
+        .then(response => response.json())
+        .then(data => {
+            const infoList = document.getElementById('infoList');
+            infoList.innerHTML = ''; // Önceki içeriği temizle
+
+            const infoMap = {
+                ad: "Ad",
+                soyad: "Soyad",
+                numara: "Numara"
+            };
+
+            // JSON verilerini listeye ekleyin
+            for (const info of data) {
+                for (const key in info) {
+                    if (info.hasOwnProperty(key) && infoMap[key]) {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<strong>${infoMap[key]}</strong>: ${info[key]}`;
+                        infoList.appendChild(listItem);
+                    }
+                }
+            }
+
+            // Bilgileri göster
+            document.getElementById('infoContainer').style.display = 'block';
+        })
+        .catch(error => console.error('Hata:', error));
+});
+
+        document.getElementById('sinavsonucButon').addEventListener('click', () => {
+    fetch('/sinavBilgi')
+        .then(response => response.json())
+        .then(data => {
+            const infoList2 = document.getElementById('infoList2');
+            infoList2.innerHTML = ''; // Önceki içeriği temizle
+
+            const subjectMap = {
+                mat_not: "Matematik",
+                fiz_not: "Fizik",
+                kim_not: "Kimya",
+                tar_not: "Tarih",
+                cog_not: "Cografya",
+                fel_not: "Felsefe"
+            };
+
+            // JSON verilerini listeye ekleyin
+            for (const info of data) {
+                for (const key in info) {
+                    if (info.hasOwnProperty(key) && subjectMap[key]) {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<strong>${subjectMap[key]}</strong>: ${info[key]}`;
+                        infoList2.appendChild(listItem);
+                    }
+                }
+            }
+        })
+        .catch(error => console.error('Hata:', error));
+});
+
+
+
+
+    </script>
+
+
+</body>
+
+</html>
